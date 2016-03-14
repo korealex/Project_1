@@ -69,7 +69,7 @@
     <string name="refresh">Refresh</string>
     <string name="sort_value_default">popular</string>
     <string name="sort_pref_key">sort_pref</string>
-    <string name="api_key">a3a254d3f11be28d2a2e2e688a1f5167</string>
+    <string name="api_key">your-key-here</string>
     <string name="api_url">http://api.themoviedb.org/3/movie/</string>
 
 
