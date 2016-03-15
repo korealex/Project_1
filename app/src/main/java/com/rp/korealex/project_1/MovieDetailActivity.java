@@ -42,7 +42,7 @@ public class MovieDetailActivity extends AppCompatActivity {
             tv.setText(Double.toString(movie.vote_average )+ "/10");
 
             ImageView imageView = (ImageView)  findViewById(R.id.poster);
-            Picasso.with(this).load("http://image.tmdb.org/t/p/w185"+movie.poster_path).into(imageView);
+            Picasso.with(this).load(this.getString(R.string.url_poster_img_185_res)+movie.poster_path).into(imageView);
 
 
 
