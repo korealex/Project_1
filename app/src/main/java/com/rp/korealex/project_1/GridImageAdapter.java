@@ -75,7 +75,7 @@ public class GridImageAdapter extends BaseAdapter implements AdapterView.OnItemC
 
             // set image based on selected text
             ImageView imageView = (ImageView) gridView.findViewById(R.id.movie_image_grid_view);
-            Picasso.with(context).load("http://image.tmdb.org/t/p/w185"+movies.get(position).poster_path).into(imageView);
+            Picasso.with(context).load(context.getString(R.string.url_poster_img_185_res)+movies.get(position).poster_path).into(imageView);
 
 
 

@@ -2,6 +2,8 @@ package com.rp.korealex.project_1;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     private GridImageAdapter adapter;
     public ArrayList<Movie> movies = new ArrayList<>();
     protected String jsonResponse;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
     String sort;
 
     @Override
@@ -52,13 +57,15 @@ public class MainActivity extends AppCompatActivity {
 //        //noinspection SimplifiableIfStatement
         if(id == R.id.action_top_rated){
 
-            getMovies("top_rated","1");
+            changeSortPref(getString(R.string.sort_value_top_rated));
+            updateList();
 
             return true;
         }
         if(id == R.id.action_popular){
 
-            getMovies("popular","1");
+            changeSortPref(getString(R.string.sort_value_popular));
+            updateList();
 
             return true;
         }
@@ -84,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = preferences.edit();
         setContentView(R.layout.activity_main);
         updateList();
         setupActionBar();
@@ -122,21 +131,42 @@ public class MainActivity extends AppCompatActivity {
 
     public void updateList(){
 
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         sort = preferences.getString(getString(R.string.sort_pref_key),  getString(R.string.sort_value_default));
         getMovies(sort,"1");
 
 
     }
+    public void changeSortPref(String pref){
 
-    public void getMovies(String category , String page){
-
-        FetchMovieTask moviesTask = new FetchMovieTask();
-        moviesTask.execute(category,page);
-
-
+        editor.putString(getString(R.string.sort_pref_key), pref);
+        editor.commit();
 
     }
+
+    public void getMovies(String category, String page) {
+        if (checkConnectivity()) {
+            FetchMovieTask moviesTask = new FetchMovieTask();
+            moviesTask.execute(category, page);
+        } else {
+
+            Toast.makeText(this, R.string.lost_connectivity_warning, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public boolean checkConnectivity(){
+
+        ConnectivityManager cm =
+                (ConnectivityManager)this.getSystemService(this.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
+
+    }
+
+
     public void updateGrid(ArrayList<Movie> moviesArray){
 
         if(!adapter.isEmpty()){

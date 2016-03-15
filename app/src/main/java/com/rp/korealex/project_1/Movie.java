@@ -4,6 +4,9 @@ package com.rp.korealex.project_1;
  * Created by korealex on 3/12/16.
  */
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,7 +37,7 @@ import java.util.Date;
  * "vote_average": 8.5,
  * "vote_count": 64
  */
-public class Movie {
+public class Movie implements Parcelable {
     public boolean adult;
     public String backdrop_path;
     public JSONArray genre_ids;
@@ -117,4 +120,57 @@ public class Movie {
     public String toString() {
         return super.toString();
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte(adult ? (byte) 1 : (byte) 0);
+        dest.writeString(this.backdrop_path);
+        dest.writeString(this.genre_ids.toString());
+        dest.writeInt(this.id);
+        dest.writeString(this.original_language);
+        dest.writeString(this.original_title);
+        dest.writeString(this.overview);
+        dest.writeString(this.release_date);
+        dest.writeString(this.poster_path);
+        dest.writeDouble(this.popularity);
+        dest.writeString(this.title);
+        dest.writeByte(video ? (byte) 1 : (byte) 0);
+        dest.writeDouble(this.vote_average);
+        dest.writeInt(this.vote_count);
+        dest.writeString(this.jsonString);
+    }
+
+    protected Movie(Parcel in) {
+        this.adult = in.readByte() != 0;
+        this.backdrop_path = in.readString();
+        this.genre_ids = in.readParcelable(JSONArray.class.getClassLoader());
+        this.id = in.readInt();
+        this.original_language = in.readString();
+        this.original_title = in.readString();
+        this.overview = in.readString();
+        this.release_date = in.readString();
+        this.poster_path = in.readString();
+        this.popularity = in.readDouble();
+        this.title = in.readString();
+        this.video = in.readByte() != 0;
+        this.vote_average = in.readDouble();
+        this.vote_count = in.readInt();
+        this.jsonString = in.readString();
+    }
+
+    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+        public Movie createFromParcel(Parcel source) {
+            return new Movie(source);
+        }
+
+        public Movie[] newArray(int size) {
+            return new Movie[size];
+        }
+    };
 }

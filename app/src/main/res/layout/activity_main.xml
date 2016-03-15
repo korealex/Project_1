@@ -5,12 +5,13 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         tools:context="com.rp.korealex.project_1.MainActivity"
-        >
+    android:background="#232323">
 
 
     <GridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/movie_grid_view"
-        android:numColumns="2" />
+        android:numColumns="2"
+        android:background="#2a2a2a" />
 </FrameLayout>
