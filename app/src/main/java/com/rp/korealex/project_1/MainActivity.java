@@ -221,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
             BufferedReader reader =  null;
             String moviesJsonString = null;
 
-            String api_key = getString(R.string.api_key);
+            String api_key = BuildConfig.IMDB_API_KEY;
 
             try {
 
