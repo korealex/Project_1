@@ -7,13 +7,11 @@ package com.rp.korealex.project_1;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -37,25 +35,25 @@ import java.util.Date;
  * "vote_average": 8.5,
  * "vote_count": 64
  */
-public class Movie implements Parcelable {
+public class Movie extends ResponseData implements Parcelable {
     public boolean adult;
     public String backdrop_path;
-    public JSONArray genre_ids;
+    public String genre_ids;
     public int id;
     public String original_language;
     public String original_title;
     public String overview;
     public String release_date;
     public String poster_path;
-    public double popularity;
+    public String popularity;
     public String title;
     public boolean video;
-    public double vote_average;
+    public String vote_average;
     public int vote_count;
     public String jsonString;
 
 
-    public Movie(boolean adult, String backdrop_path, JSONArray genre_ids, int id, String original_language, String original_title, String overview, String release_date, String poster_path, double popularity, String title, boolean video, double vote_average, int vote_count, String jsonString) {
+    public Movie(boolean adult, String backdrop_path, String genre_ids, int id, String original_language, String original_title, String overview, String release_date, String poster_path, String popularity, String title, boolean video, String vote_average, int vote_count, String jsonString) {
 
         this.adult = adult;
         this.backdrop_path = backdrop_path;
@@ -72,6 +70,7 @@ public class Movie implements Parcelable {
         this.vote_average = vote_average;
         this.vote_count = vote_count;
         this.jsonString = jsonString;
+        this.type = ResponseData.MOVIES;
     }
 
 
@@ -79,17 +78,17 @@ public class Movie implements Parcelable {
         //
         this(jsonObject.getBoolean("adult"),
                 jsonObject.getString("backdrop_path"),
-                jsonObject.getJSONArray("genre_ids"),
+                jsonObject.getString("genre_ids"),
                 jsonObject.getInt("id"),
                 jsonObject.getString("original_language"),
                 jsonObject.getString("original_title"),
                 jsonObject.getString("overview"),
                 jsonObject.getString("release_date"),
                 jsonObject.getString("poster_path"),
-                jsonObject.getDouble("popularity"),
+                jsonObject.getString("popularity"),
                 jsonObject.getString("title"),
                 jsonObject.getBoolean("video"),
-                jsonObject.getDouble("vote_average"),
+                jsonObject.getString("vote_average"),
                 jsonObject.getInt("vote_count"),
                 jsonObject.toString()
         );
@@ -99,11 +98,11 @@ public class Movie implements Parcelable {
 
 
     public String toJsonString() {
-        return  this.jsonString;
+        return this.jsonString;
 
     }
 
-    public String getReleaseYear(){
+    public String getReleaseYear() {
         SimpleDateFormat year = new SimpleDateFormat("yyyy");
         try {
             Date date = year.parse(this.release_date);
@@ -138,30 +137,32 @@ public class Movie implements Parcelable {
         dest.writeString(this.overview);
         dest.writeString(this.release_date);
         dest.writeString(this.poster_path);
-        dest.writeDouble(this.popularity);
+        dest.writeString(this.popularity);
         dest.writeString(this.title);
         dest.writeByte(video ? (byte) 1 : (byte) 0);
-        dest.writeDouble(this.vote_average);
+        dest.writeString(this.vote_average);
         dest.writeInt(this.vote_count);
         dest.writeString(this.jsonString);
+        dest.writeValue(this.type);
     }
 
     protected Movie(Parcel in) {
         this.adult = in.readByte() != 0;
         this.backdrop_path = in.readString();
-        this.genre_ids = in.readParcelable(JSONArray.class.getClassLoader());
+        this.genre_ids = in.readString();
         this.id = in.readInt();
         this.original_language = in.readString();
         this.original_title = in.readString();
         this.overview = in.readString();
         this.release_date = in.readString();
         this.poster_path = in.readString();
-        this.popularity = in.readDouble();
+        this.popularity = in.readString();
         this.title = in.readString();
         this.video = in.readByte() != 0;
-        this.vote_average = in.readDouble();
+        this.vote_average = in.readString();
         this.vote_count = in.readInt();
         this.jsonString = in.readString();
+        this.type = ResponseData.MOVIES;
     }
 
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {

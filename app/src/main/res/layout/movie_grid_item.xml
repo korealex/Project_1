@@ -10,6 +10,16 @@
         android:src="@android:drawable/ic_popup_disk_full"
         android:scaleType="centerCrop" />
 
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/fav_image"
+        android:src="@drawable/abc_btn_rating_star_on_mtrl_alpha"
+        android:tint="@android:color/holo_orange_light"
+        android:layout_margin="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true" />
+
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="wrap_content"-->
